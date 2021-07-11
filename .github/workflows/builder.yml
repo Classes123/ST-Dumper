@@ -1,0 +1,23 @@
+name: Builder
+
+on:
+  push:
+    branches: main
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v1
+    - name: Downloading sourcemod...
+      run: |
+        wget "http://www.sourcemod.net/latest.php?version=1.10&os=linux" -O sourcemod.tar.gz
+        tar -xzf sourcemod.tar.gz
+    - name: Setting permissions...
+      run: chmod +x addons/sourcemod/scripting/spcomp
+    - name: Compiling...
+      run: |
+        echo -e "\nCompiling StringTablesDumper.sp..." 
+        addons/sourcemod/scripting/spcomp StringTablesDumper.sp -O2 -t4 -v2
